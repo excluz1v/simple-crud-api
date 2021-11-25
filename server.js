@@ -1,9 +1,10 @@
+require('dotenv').config()
 const Application = require('./Application')
 const personsRouter = require('./persons-router')
 
 
-const host = "localhost"
-const port = "8000"
+const host = process.env.HOST
+const port = process.env.PORT
 
 const app = new Application()
 
