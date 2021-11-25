@@ -43,6 +43,5 @@ class Router {
 }
 
 module.exports = {
-    Router,
-    emitter
+    Router
 }
