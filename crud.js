@@ -13,7 +13,10 @@ exports.update = function update(data, id, persons) {
     const index = persons.findIndex(person => {
         return person.id === id
     })
+
     const result = [...persons]
-    result[index] = { ...result[index], ...data }
-    return result
+    const updatedPerson = { ...result[index], ...data }
+
+    result[index] = updatedPerson
+    return [result, updatedPerson]
 }

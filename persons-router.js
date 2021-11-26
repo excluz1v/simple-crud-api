@@ -60,12 +60,12 @@ router.put('/person/', async (req, res) => {
     const body = JSON.parse(req.body)
     await validateTypes(body, res)
     await validate(personId, res, persons)
-    persons = update(body, personId, persons)
-
+    const [updatedPersons, newPerson] = update(body, personId, persons)
+    persons = updatedPersons
     res.writeHead(201, {
         'Content-type': 'application/json'
     })
-    res.end('success')
+    res.end(JSON.stringify(newPerson))
 })
 
 module.exports = router
