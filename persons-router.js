@@ -1,8 +1,8 @@
 const { Router } = require("./Router")
 const router = new Router()
 
-const { validatePOST, validate } = require('./validate')
-const { create, del } = require('./crud')
+const { validateTypes, validate } = require('./validate')
+const { create, del, update } = require('./crud')
 let persons = require("./persons")
 
 
@@ -35,7 +35,7 @@ router.get('/person/', async (req, res) => {
 })
 router.post('/person', async (req, res) => {
     const body = JSON.parse(req.body)
-    await validatePOST(body, res)
+    await validateTypes(body, res)
     const newPerson = create(body)
     persons = [...persons, newPerson]
     res.writeHead(201, {
@@ -55,5 +55,17 @@ router.delete('/person/', async (req, res) => {
     res.end()
 })
 
+router.put('/person/', async (req, res) => {
+    const personId = req.personId
+    const body = JSON.parse(req.body)
+    await validateTypes(body, res)
+    await validate(personId, res, persons)
+    persons = update(body, personId, persons)
+
+    res.writeHead(201, {
+        'Content-type': 'application/json'
+    })
+    res.end('success')
+})
 
 module.exports = router

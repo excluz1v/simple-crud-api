@@ -7,35 +7,35 @@ const types = {
     hobbies: 'object'
 }
 
-async function validatePOST(body, res) {
+
+async function validateTypes(body, res) {
     const bodyKeys = Object.keys(body)
+
     for (let key in body) {
         if (!personKeys.includes(key)) {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(`Person object only contain's ${personKeys} properties`)
-            return false
+            return res.end(`Person object only contain's ${personKeys} properties`)
+
         } else if (!personKeys.every(el => bodyKeys.includes(el))) {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(`Person object only contain's ${personKeys} properties`)
-            return false
-        } else if (typeof body[key] !== types[key] && key !== 'hobbies') {
+            return res.end(`Person object only contain's ${personKeys} properties`)
 
+        } else if (typeof body[key] !== types[key] && key !== 'hobbies') {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(`Typeof ${key} must be ${types[key]}`)
-            return false
+            return res.end(`Typeof ${key} must be ${types[key]}`)
+
         } else if (key === 'hobbies') {
             if (!Array.isArray(body[key])) {
                 res.writeHead(400, {
                     'Content-type': 'application/json'
                 })
-                res.end(`Typeof ${key} must be Array`)
-                return false
+                return res.end(`Typeof ${key} must be Array`)
             }
         }
     }
@@ -46,16 +46,13 @@ async function validateUUID(personId, res) {
         res.writeHead(400, {
             'Content-type': 'application/json'
         })
-        res.end(`PersonId must be type of uuid`)
-        return false
+        return res.end(`PersonId must be type of uuid`)
     }
-    return true
 }
 
 async function validate(personId, res, persons) {
     await validateUUID(personId, res, persons)
     await isExist(personId, res, persons)
-    return true
 }
 
 async function isExist(personId, res, persons) {
@@ -63,10 +60,10 @@ async function isExist(personId, res, persons) {
         res.writeHead(404, {
             'Content-type': 'application/json'
         })
-        res.end(`person with id ${personId} is not exist`)
-        return false
+        return res.end(`person with id ${personId} is not exist`)
+
     }
-    return true
+
 }
 
-module.exports = { validatePOST, validate }
+module.exports = { validateTypes, validate }
