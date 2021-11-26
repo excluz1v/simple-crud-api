@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+
 const personKeys = ['name', 'age', 'hobbies']
 const types = {
     name: 'string',
@@ -40,8 +41,7 @@ async function validatePOST(body, res) {
     }
 }
 
-async function validateGET(personId, res) {
-
+async function validateUUID(personId, res) {
     if (!uuid.validate(personId)) {
         res.writeHead(400, {
             'Content-type': 'application/json'
@@ -49,8 +49,24 @@ async function validateGET(personId, res) {
         res.end(`PersonId must be type of uuid`)
         return false
     }
+    return true
 }
 
+async function validate(personId, res, persons) {
+    await validateUUID(personId, res, persons)
+    await isExist(personId, res, persons)
+    return true
+}
 
+async function isExist(personId, res, persons) {
+    if (!persons.find(person => person.id === personId)) {
+        res.writeHead(404, {
+            'Content-type': 'application/json'
+        })
+        res.end(`person with id ${personId} is not exist`)
+        return false
+    }
+    return true
+}
 
-module.exports = { validatePOST, validateGET }
+module.exports = { validatePOST, validate }

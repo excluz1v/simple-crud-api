@@ -1,8 +1,7 @@
 require('dotenv').config()
 const Application = require('./Application')
 const personsRouter = require('./persons-router')
-const jsonParser = require('./jsonParser')
-const URLParser = require('./URLParser')
+
 
 const host = process.env.HOST
 const port = process.env.PORT
