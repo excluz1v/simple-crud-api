@@ -7,7 +7,7 @@ const { create } = require('./crud')
 // personMask {
 //     'id': 'string',
 //     'name': 'string',
-//     'age': 'string',
+//     'age': 'number',
 //     'hobbies': 'arr'
 // }
 
