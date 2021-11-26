@@ -1,5 +1,5 @@
 //  endpoints ={
-//     '/users':{
+//     '/persons':{
 //         "GET":handler1,
 //         "POST":handler2,
 //         "DELETE":handler3
@@ -25,7 +25,6 @@ class Router {
 
         //MASK [path]:[method]
         endpoint[method] = handler
-
     }
 
     get(path, handler) {

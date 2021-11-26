@@ -10,6 +10,7 @@ const persons = {
 }
 
 router.get('/persons', (req, res) => {
+    console.log(req.personId)
     res.send(persons)
 })
 
