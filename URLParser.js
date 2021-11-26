@@ -5,6 +5,6 @@ module.exports = baseurl => (req, res) => {
     if (req.url.includes(personPath)) {
         const personId = pathname.slice(personPath.length)
         req.personId = personId
-        req.pathname = '/persons'
+        req.pathname = personPath
     } else req.pathname = pathname
 }

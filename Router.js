@@ -13,7 +13,7 @@ class Router {
     constructor() {
         this.endpoints = {}
     }
-    request(method = 'GET', path, handler) {
+    async request(method = 'GET', path, handler) {
         if (!this.endpoints[path]) {
             this.endpoints[path] = {}
         }
@@ -27,17 +27,17 @@ class Router {
         endpoint[method] = handler
     }
 
-    get(path, handler) {
-        this.request('GET', path, handler)
+    async get(path, handler) {
+        await this.request('GET', path, handler)
     }
-    post(path, handler) {
-        this.request('POST', path, handler)
+    async post(path, handler) {
+        await this.request('POST', path, handler)
     }
-    put(path, handler) {
-        this.request('PUT', path, handler)
+    async put(path, handler) {
+        await this.request('PUT', path, handler)
     }
-    delete(path, handler) {
-        this.request('DELETE', path, handler)
+    async delete(path, handler) {
+        await this.request('DELETE', path, handler)
     }
 }
 

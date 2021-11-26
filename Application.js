@@ -1,6 +1,5 @@
 const http = require("http")
 const EventEmitter = require('events')
-const bodyParser = require('./bodyParser')
 const URLParser = require("./URLParser")
 
 
@@ -15,7 +14,7 @@ module.exports = class Application {
         this.server.listen(port, host, callback)
     }
 
-    use(middleware) {
+    async use(middleware) {
         this.middlewares.push(middleware)
     }
 
@@ -36,19 +35,25 @@ module.exports = class Application {
                     handler(req, res)
                 })
             })
-
         })
     }
 
     _createServer() {
         return http.createServer((req, res) => {
-            this.use(bodyParser)
+            let body = ''
+            req.on('data', (chunk) => {
+                body += chunk
+            })
+
+            req.on('end', () => {
+                if (body) req.body = (body)
+                const emitted = this.emitter.emit(this._getRouteMask(req.pathname, req.method), req, res)
+                if (!emitted) {
+                    res.end()
+                }
+            })
             this.use(URLParser('http://localhost:8000'))
             this.middlewares.forEach(middleware => middleware(req, res))
-            const emitted = this.emitter.emit(this._getRouteMask(req.pathname, req.method), req, res)
-            if (!emitted) {
-                res.end()
-            }
         })
     }
     _getRouteMask(path, method) {
