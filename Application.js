@@ -1,5 +1,6 @@
 const http = require("http")
 const EventEmitter = require('events')
+const bodyParser = require('./bodyParser')
 
 
 module.exports = class Application {
@@ -10,7 +11,7 @@ module.exports = class Application {
     }
 
     listen(port, host, callback) {
-        this.server.listen(port, callback)
+        this.server.listen(port, host, callback)
     }
 
     use(middleware) {
@@ -41,6 +42,7 @@ module.exports = class Application {
 
     _createServer() {
         return http.createServer((req, res) => {
+            this.use(bodyParser)
             const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res)
             if (!emitted) {
                 res.end()

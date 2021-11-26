@@ -10,10 +10,11 @@ const persons = {
 }
 
 router.get('/persons', (req, res) => {
-    res.writeHead(200, {
-        'Content-type': 'application/json'
-    })
-    res.end(JSON.stringify(persons))
+    res.send(persons)
+})
+
+router.post('/persons', (req, res) => {
+    res.send(persons)
 })
 
 module.exports = router
