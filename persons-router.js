@@ -1,7 +1,7 @@
 const { Router } = require("./Router")
 const router = new Router()
 
-const { validateTypes, validate } = require('./validate')
+const { validateTypes, isExist, validateUUID } = require('./validate')
 const { create, del, update } = require('./crud')
 let persons = require("./persons")
 
@@ -22,9 +22,11 @@ router.get('/person', (req, res) => {
     res.end(JSON.stringify(persons))
 })
 
-router.get('/person/', async (req, res) => {
+router.get('/person/', (req, res) => {
     const personId = req.personId
-    await validate(personId, res, persons)
+    if (!validateUUID(personId, res)) return false
+    if (!isExist(personId, res, persons)) return false
+
     if (persons.find(person => person.id === personId)) {
         const person = persons.find(person => person.id === personId)
         res.writeHead(200, {
@@ -33,9 +35,10 @@ router.get('/person/', async (req, res) => {
         res.end(JSON.stringify(person))
     }
 })
+
 router.post('/person', async (req, res) => {
     const body = JSON.parse(req.body)
-    await validateTypes(body, res)
+    if (!validateTypes(body, res)) return false
     const newPerson = create(body)
     persons = [...persons, newPerson]
     res.writeHead(201, {
@@ -46,7 +49,9 @@ router.post('/person', async (req, res) => {
 
 router.delete('/person/', async (req, res) => {
     const personId = req.personId
-    await validate(personId, res, persons)
+    if (!validateUUID(personId, res)) return false
+    if (!isExist(personId, res, persons)) return false
+
     persons = del(personId, persons)
 
     res.writeHead(204, {
@@ -58,8 +63,11 @@ router.delete('/person/', async (req, res) => {
 router.put('/person/', async (req, res) => {
     const personId = req.personId
     const body = JSON.parse(req.body)
-    await validateTypes(body, res)
-    await validate(personId, res, persons)
+
+    if (!validateTypes(body, res)) return false
+    if (!validateUUID(personId, res)) return false
+    if (!isExist(personId, res, persons)) return false
+
     const [updatedPersons, newPerson] = update(body, personId, persons)
     persons = updatedPersons
     res.writeHead(201, {
