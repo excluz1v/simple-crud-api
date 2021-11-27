@@ -2,9 +2,11 @@
 
 1 clone repo
 
-2 git checkout development
+2 cd .\simple-crud-api\
 
-3 run in console **npm run start:prod** or **npm run start:dev**
+3 git checkout development
+
+4 run in console **npm run start:prod** or **npm run start:dev**
 
 ### Details
 
