@@ -91,7 +91,7 @@ router.put('/person/', async (req, res) => {
 
         const [updatedPersons, newPerson] = update(body, personId, persons)
         persons = updatedPersons
-        res.writeHead(201, {
+        res.writeHead(200, {
             'Content-type': 'application/json'
         })
         res.end(JSON.stringify(newPerson))

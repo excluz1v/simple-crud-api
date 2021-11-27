@@ -15,26 +15,26 @@ function validateTypes(body, res) {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(`Person object only contain's ${personKeys} properties`)
+            res.end(JSON.stringify(`Person object only contain's ${personKeys} properties`))
             return false
         } else if (!personKeys.every(el => bodyKeys.includes(el))) {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(`Person object only contain's ${personKeys} properties`)
+            res.end(JSON.stringify(`Person object only contain's ${personKeys} properties`))
             return false
         } else if (typeof body[key] !== types[key] && key !== 'hobbies') {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(`Typeof ${key} must be ${types[key]}`)
+            res.end(JSON.stringify(`Typeof ${key} must be ${types[key]}`))
             return false
         } else if (key === 'hobbies') {
             if (!Array.isArray(body[key])) {
                 res.writeHead(400, {
                     'Content-type': 'application/json'
                 })
-                res.end(`Typeof ${key} must be Array`)
+                res.end(JSON.stringify(`Typeof ${key} must be Array`))
                 return false
             }
         }
@@ -49,7 +49,7 @@ function validateUUID(personId, res) {
         res.writeHead(400, {
             'Content-type': 'application/json'
         })
-        res.end(`PersonId must be type of uuid`)
+        res.end(JSON.stringify(`PersonId must be type of uuid`))
         return false
     }
     return true
@@ -61,7 +61,7 @@ function isExist(personId, res, persons) {
         res.writeHead(404, {
             'Content-type': 'application/json'
         })
-        res.end(`person with id ${personId} is not exist`)
+        res.end(JSON.stringify(`person with id ${personId} is not exist`))
         return false
     }
     return true
