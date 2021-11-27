@@ -1,6 +1,6 @@
 const http = require("http")
 const EventEmitter = require('events')
-const URLParser = require("./URLParser")
+const URLParser = require("../middlewear/URLParser")
 
 
 module.exports = class Application {

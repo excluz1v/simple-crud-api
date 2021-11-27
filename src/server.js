@@ -1,6 +1,6 @@
 require('dotenv').config()
-const Application = require('./Application')
-const personsRouter = require('./persons-router')
+const Application = require('./classes/Application')
+const personsRouter = require('./routes/persons-router')
 
 
 const host = process.env.HOST

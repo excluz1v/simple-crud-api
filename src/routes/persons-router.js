@@ -1,9 +1,9 @@
-const { Router } = require("./Router")
+const { Router } = require("../classes/Router")
 const router = new Router()
 
-const { validateTypes, isExist, validateUUID } = require('./validate')
-const { create, del, update } = require('./crud')
-let persons = require("./persons")
+const { validateTypes, isExist, validateUUID } = require('../validate/validate')
+const { create, del, update } = require('../crud')
+let persons = require("../persons")
 
 // personMask {
 //     'id': 'string',
