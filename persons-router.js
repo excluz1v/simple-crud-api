@@ -5,15 +5,12 @@ const { validateTypes, isExist, validateUUID } = require('./validate')
 const { create, del, update } = require('./crud')
 let persons = require("./persons")
 
-
 // personMask {
 //     'id': 'string',
 //     'name': 'string',
 //     'age': 'number',
 //     'hobbies': 'arr'
 // }
-
-
 
 router.get('/person', (req, res) => {
     res.writeHead(200, {

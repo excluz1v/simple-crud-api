@@ -20,7 +20,7 @@ module.exports = class Application {
 
     addRouter(router) {
         //  endpoints ={
-        //     '/persons':{
+        //     '/person':{
         //         "GET":handler1,
         //         "POST":handler2,
         //         "DELETE":handler3
@@ -49,7 +49,8 @@ module.exports = class Application {
                 if (body) req.body = (body)
                 const emitted = this.emitter.emit(this._getRouteMask(req.pathname, req.method), req, res)
                 if (!emitted) {
-                    res.end()
+                    res.writeHead(404)
+                    res.end('Page is not exist')
                 }
             })
             this.use(URLParser('http://localhost:8000'))

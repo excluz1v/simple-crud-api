@@ -1,5 +1,5 @@
 //  endpoints ={
-//     '/persons':{
+//     '/person':{
 //         "GET":handler1,
 //         "POST":handler2,
 //         "DELETE":handler3
