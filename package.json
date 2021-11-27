@@ -4,7 +4,7 @@
   "description": "simple crud api",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest",
     "start:prod": "webpack --mode production && node ./dist/bundle",
     "start:dev": "nodemon ./src/server.js"
   },
