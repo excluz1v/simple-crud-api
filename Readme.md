@@ -1,7 +1,9 @@
 ### Get Started
 
 1 clone repo
+
 2 git checkout development
+
 3 run in console **npm run start:prod** or **npm run start:dev**
 
 ### Details
