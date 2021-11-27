@@ -2,7 +2,7 @@
 
 1 clone repo
 2 cd /CRUD
-3 run in console **npm run start**
+3 run in console **npm run start:prod** or **npm run start:dev**
 
 ### Details
 
