@@ -145,3 +145,85 @@ describe('exist errors scenario', () => {
     })
 
 })
+
+
+describe('validate errors scenario', () => {
+    const request = supertest(server)
+    // 1. POST-запросом не создается новый объект (ожидается ответ, содержащий сообщение что поля у объекта невалидны)
+    // 2.	GET-запросом пытаемся получить несуществующий объект по его id (ожидается сообщение об ошибке что personId невалиден (не uuid))
+    // 3.	PUT-запросом не обновляется созданный объект (ожидается ответ, содержащий сообщение об ошибке что personId невалиден (не uuid))
+    // 4.	DELETE-запросом не удаляется созданный объект по id (ожидается сообщение об ошибке что personId невалиден (не uuid))
+
+    // 1. POST-запросом не создается новый объект (ожидается ответ, содержащий сообщение что не все поля присутствуют)
+
+    const types = {
+        name: 'string',
+        age: 'number',
+        hobbies: 'Array'
+    }
+    const invalidId = '12345'
+
+    test("POST /person return message that req.body NAME property is invalid", async () => {
+        const response = await request.post('/person').send({
+            "name": 123,
+            "age": 123,
+            'hobbies': []
+        });
+
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual(`Typeof name must be ${types.name}`)
+    })
+    test("POST /person return message that req.body AGE property is invalid", async () => {
+        const response = await request.post('/person').send({
+            "name": 'DIma',
+            "age": "123",
+            'hobbies': []
+        });
+
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual(`Typeof age must be ${types.age}`)
+    })
+
+    test("POST /person return message that req.body HOBBIES property is invalid", async () => {
+        const response = await request.post('/person').send({
+            "name": 'DIma',
+            "age": 123,
+            'hobbies': {}
+        });
+
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual(`Typeof hobbies must be ${types.hobbies}`)
+    })
+
+    // 2.	GET-запросом пытаемся получить несуществующий объект по его id (ожидается сообщение об ошибке что personId невалиден (не uuid))
+    test("GET /person:id return message that id must be type of uuid", async () => {
+        const response = await request.get(`/person/${invalidId}`);
+
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual(`PersonId must be type of uuid`)
+    })
+
+    // 3.	PUT-запросом не обновляется созданный объект (ожидается ответ, содержащий сообщение об ошибке что personId невалиден (не uuid))
+
+    test('PUT /person/:id return message that id must be type of uuid', async () => {
+        const updatedInfo = {
+            "name": "Petya",
+            "age": 111,
+            "hobbies": ["tennis"]
+        }
+
+        const response = await request.put(`/person/${invalidId}`).send(updatedInfo);
+
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual(`PersonId must be type of uuid`)
+    })
+
+    // 4.	DELETE-запросом не удаляется созданный объект по id (ожидается сообщение об ошибке что personId невалиден (не uuid))
+
+    test('DELETE /person/:id message that id must be type of uuid', async () => {
+
+        const response = await request.delete(`/person/${invalidId}`);
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual('PersonId must be type of uuid')
+    })
+})

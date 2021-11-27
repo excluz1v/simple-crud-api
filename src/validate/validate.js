@@ -4,7 +4,7 @@ const personKeys = ['name', 'age', 'hobbies']
 const types = {
     name: 'string',
     age: 'number',
-    hobbies: 'object'
+    hobbies: 'Array'
 }
 
 
@@ -34,7 +34,7 @@ function validateTypes(body, res) {
                 res.writeHead(400, {
                     'Content-type': 'application/json'
                 })
-                res.end(JSON.stringify(`Typeof ${key} must be Array`))
+                res.end(JSON.stringify(`Typeof ${key} must be ${types[key]}`))
                 return false
             }
         }
