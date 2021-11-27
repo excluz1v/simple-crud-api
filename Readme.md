@@ -6,7 +6,9 @@
 
 3 git checkout development
 
-4 run in console **npm run start:prod** or **npm run start:dev**
+4 npm i
+
+5 run in console **npm run start:prod** or **npm run start:dev**
 
 ### Details
 
