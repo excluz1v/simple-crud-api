@@ -13,7 +13,7 @@ app.addRouter(personsRouter)
 
 app.listen(port, host, () => { })
 
-describe('first scenario', () => {
+describe('success scenario', () => {
     // 1.	GET-запросом получаем все объекты (ожидается пустой массив)
     // 2.	POST-запросом создается новый объект (ожидается ответ, содержащий свежесозданный объект)
     // 3.	GET-запросом пытаемся получить созданный объект по его id (ожидается созданный объект)
@@ -87,4 +87,61 @@ describe('first scenario', () => {
         expect(response.body).toEqual(`person with id ${newPerson.id} is not exist`)
     })
     server.close()
+})
+
+
+describe('exist errors scenario', () => {
+    const request = supertest(server)
+    // 1. POST-запросом не создается новый объект (ожидается ответ, содержащий сообщение что не все поля присутствуют)
+    // 2.	GET-запросом пытаемся получить несуществующий объект по его id (ожидается сообщение об ошибке что такой person не существует)
+    // 3.	PUT-запросом не обновляется созданный объект (ожидается ответ, содержащий сообщение об ошибке что такого id не существует)
+    // 4.	DELETE-запросом не удаляется созданный объект по id (ожидается сообщение об ошибке что такого id не существует)
+
+    // 1. POST-запросом не создается новый объект (ожидается ответ, содержащий сообщение что не все поля присутствуют)
+
+    const personKeys = ['name', 'age', 'hobbies']
+    const invalidId = 'e9517777-d432-4960-b1c1-c16769034af2'
+
+    test("POST /person return message that you must pass all properties in req.body", async () => {
+        const response = await request.post('/person').send({
+            "name": "Vasya",
+            "age": 353
+        });
+
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual(`Person object must contain's ${personKeys} properties`)
+    })
+
+    // 2.	GET-запросом пытаемся получить несуществующий объект по его id (ожидается сообщение об ошибке что такой person не существует)
+    test("GET /person:id return message person with id is not exist", async () => {
+        const response = await request.get(`/person/${invalidId}`);
+
+        expect(response.statusCode).toBe(404)
+        expect(response.body).toEqual(`person with id ${invalidId} is not exist`)
+    })
+
+    // 3.	PUT-запросом не обновляется созданный объект (ожидается ответ, содержащий сообщение об ошибке что такого id не существует)
+
+    test('PUT /person/:id return message person with id is not exist', async () => {
+        const updatedInfo = {
+            "name": "Petya",
+            "age": 111,
+            "hobbies": ["tennis"]
+        }
+
+        const response = await request.put(`/person/${invalidId}`).send(updatedInfo);
+
+        expect(response.statusCode).toBe(404)
+        expect(response.body).toEqual(`person with id ${invalidId} is not exist`)
+    })
+
+    // 4.	DELETE-запросом не удаляется созданный объект по id (ожидается сообщение об ошибке что такого id не существует)
+
+    test('DELETE /person/:id message person with id is not exists', async () => {
+
+        const response = await request.delete(`/person/${invalidId}`);
+        expect(response.statusCode).toBe(404)
+        expect(response.body).toEqual(`person with id ${invalidId} is not exist`)
+    })
+
 })

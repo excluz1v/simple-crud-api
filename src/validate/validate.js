@@ -15,13 +15,13 @@ function validateTypes(body, res) {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(JSON.stringify(`Person object only contain's ${personKeys} properties`))
+            res.end(JSON.stringify(`Person object only  contain's ${personKeys} properties`))
             return false
         } else if (!personKeys.every(el => bodyKeys.includes(el))) {
             res.writeHead(400, {
                 'Content-type': 'application/json'
             })
-            res.end(JSON.stringify(`Person object only contain's ${personKeys} properties`))
+            res.end(JSON.stringify(`Person object must contain's ${personKeys} properties`))
             return false
         } else if (typeof body[key] !== types[key] && key !== 'hobbies') {
             res.writeHead(400, {
